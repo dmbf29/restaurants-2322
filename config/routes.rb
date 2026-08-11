@@ -1,14 +1,35 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  # verbs -> get, post, patch, delete
+  # prefix -> nickname for the path ONLY (not the verb)
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
+  # To build a path
+  # http_verb '/path', to: 'controller#action', as: :prefix
 
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
+  # Read all restaurants -> index
+  get "/restaurants", to: "restaurants#index", as: :restaurants # (get)
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  # Create a restaurant
+  # One action JUST for the form
+  get "/restaurants/new", to: "restaurants#new", as: :new_restaurant
+  # One action to create the instance from the form information
+  post "/restaurants", to: "restaurants#create" # , as: :restaurants # (post)
+
+  # Edit a restaurant
+  # One action JUST for the form
+  get "/restaurants/:id/edit", to: "restaurants#edit", as: :edit_restaurant
+  # One action to update the instance from the form information
+  patch "/restaurants/:id", to: "restaurants#update", as: :restaurant
+
+  # Read one restaurant -> show
+  get "/restaurants/:id", to: "restaurants#show" # , as: :restaurant # (get)
+
+  # Delete a restaurant
+  delete "/restaurants/:id", to: "restaurants#destroy" # , as: :restaurant # (delete)
 end
+
+# <%= link_to "thing you see", prefix_path %>
+# <%= link_to "All restaurants", restaurants_path %>
+
+# prefix -> link
+# prefix -> form
+# prefix -> controller redirect_to
