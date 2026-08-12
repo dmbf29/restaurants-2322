@@ -1,0 +1,7 @@
+<%= simple_form_for restaurant do |f| %>
+  <%= f.input :name %>
+  <%= f.input :address %>
+  <%= f.input :category, collection: %W[burger ramen sushi desserts healthy kebabs pizza tacos sandwiches dumplings soup curry rice pasta steakhouse vegan bakery juice salads seafood brunch wings cafe bbq deli pies buffet pub brasserie shakes creamery grill] %>
+  <%= f.input :rating %>
+  <%= f.submit "Submit", class: 'btn btn-primary mt-2' %>
+<% end %>

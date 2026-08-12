@@ -1,0 +1,10 @@
+<div class="container my-5">
+  <h1>Add a Review for <%= @restaurant.name %></h1>
+  <%= simple_form_for [@restaurant, @review] do |f| %>
+    <%= f.input :content %>
+    <%= f.submit 'Add', class: 'btn btn-success mt-2' %>
+  <% end %>
+</div>
+<%# sfn + tab %>
+<%#= simple_form_for [@first, @second] do |f| %>
+  <%# end %>

@@ -1,4 +1,15 @@
 class RestaurantsController < ApplicationController
+  # /restaurants/top
+  def top
+    @restaurants = Restaurant.where(rating: 5)
+  end
+
+  # /restaurants/25/navigate
+  def navigate
+    # get the ID from the URL
+    @restaurant = Restaurant.find(params[:id])
+  end
+
   # /restaurants
   def index
     @restaurants = Restaurant.all
