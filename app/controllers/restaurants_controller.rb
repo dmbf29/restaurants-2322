@@ -1,4 +1,6 @@
 class RestaurantsController < ApplicationController
+  skip_before_action :authenticate_user!, only: [ :index, :show ]
+
   # /restaurants/top
   def top
     @restaurants = Restaurant.where(rating: 5)
@@ -12,7 +14,9 @@ class RestaurantsController < ApplicationController
 
   # /restaurants
   def index
-    @restaurants = Restaurant.all
+    # @restaurants = Restaurasnt.all
+    # @restaurants = current_user.restaurants
+    @restaurants = policy_scope(Restaurant) # Restaurant IS "scope" -> scope.all
     # render 'index.html.erb'
   end
 
@@ -20,6 +24,7 @@ class RestaurantsController < ApplicationController
   def show
     # pull the ID from the URL -> params[:id]
     @restaurant = Restaurant.find(params[:id])
+    authorize @restaurant
     # render 'show.html.erb'
   end
 
@@ -27,6 +32,7 @@ class RestaurantsController < ApplicationController
   def new
     # Just for the form
     @restaurant = Restaurant.new
+    authorize @restaurant
     # render 'new.html.erb'
   end
 
@@ -34,6 +40,8 @@ class RestaurantsController < ApplicationController
   # NO VIEW
   def create
     @restaurant = Restaurant.new(restaurant_params)
+    @restaurant.user = current_user
+    authorize @restaurant
     if @restaurant.save
       # go to the show page
       redirect_to restaurant_path(@restaurant)
@@ -46,12 +54,14 @@ class RestaurantsController < ApplicationController
   # restaurants/1/edit
   def edit
     @restaurant = Restaurant.find(params[:id])
+    authorize @restaurant
   end
 
   # YOU CANT ACCESS VIA A URL, you have to submit a form
   # No view
   def update
     @restaurant = Restaurant.find(params[:id])
+    authorize @restaurant
     if @restaurant.update(restaurant_params)
       redirect_to restaurant_path(@restaurant)
     else
@@ -63,6 +73,7 @@ class RestaurantsController < ApplicationController
   # YOU CANT ACCESS VIA A URL, you have to click a delete button
   def destroy
     @restaurant = Restaurant.find(params[:id])
+    authorize @restaurant
     @restaurant.destroy
     redirect_to restaurants_path, status: :see_other
   end

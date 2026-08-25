@@ -1,7 +1,9 @@
 puts "Cleaning the DB..."
 Restaurant.destroy_all
+User.destroy_all
 
 CHEFS = %w[Ayaka Cassio Drew Gifta Kylie Matt Molika Twinky Yusuke]
+GITHUBS = %w[ayakakikuchi-222 cassiokiyoshi dholmes-jp giftaSantosa kylvi Himynameismatt90 molikahaikal-ctrl HungChingMan cura-yjk]
 CATEGORIES = %W[burger ramen sushi desserts healthy kebabs pizza tacos sandwiches dumplings soup curry rice pasta steakhouse vegan bakery juice salads seafood brunch wings cafe bbq deli pies buffet pub brasserie shakes creamery grill]
 
 def get_category(name)
@@ -10,15 +12,16 @@ def get_category(name)
 end
 
 puts "Creating #{CHEFS.count * 2} Restaurants..."
-2.times do
-  CHEFS.shuffle.each do |name|
-    restaurant_name = Faker::Restaurant.unique.name
-    Restaurant.create!(
-      name: "#{name}'s #{restaurant_name}",
-      rating: rand(3..5),
-      address: "日本, 〒153-0063 東京都目黒区 目黒#{rand(1..3)}丁目#{rand(1..10)}番#{rand(1..3)}号",
-      category: get_category(restaurant_name)
-    )
-  end
+CHEFS.shuffle.each do |name|
+  index = CHEFS.index(name)
+  user = User.create!(email: "#{name.downcase}@lewagon.com", password: '123123', username: GITHUBS[index])
+  restaurant_name = Faker::Restaurant.unique.name
+  Restaurant.create!(
+    name: "#{name}'s #{restaurant_name}",
+    rating: rand(3..5),
+    address: "日本, 〒153-0063 東京都目黒区 目黒#{rand(1..3)}丁目#{rand(1..10)}番#{rand(1..3)}号",
+    category: get_category(restaurant_name),
+    user: user
+  )
 end
 puts "... created #{Restaurant.count} restaurants"

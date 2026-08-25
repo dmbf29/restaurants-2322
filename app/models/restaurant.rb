@@ -3,6 +3,7 @@ class Restaurant < ApplicationRecord
   # -> it will delete the reviews along with the restaurant
   # associations
   has_many :reviews, dependent: :destroy # restaurant.reviews
+  belongs_to :user
   # validations
   # validates :column_name, add the validation
   validates :name, presence: true
